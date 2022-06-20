@@ -1,0 +1,12 @@
+/* STRIPED TABLE */
+tr:nth-child(even) {
+  background: #CCC;
+}
+
+.sorting tr:not(.home) {
+  cursor: pointer;
+}
+
+.ui-state-highlight {
+  border: 2px dashed #ccc;
+}

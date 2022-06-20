@@ -1,0 +1,149 @@
+body { 
+  color: #1abc9c;
+}
+
+/* SVG COLOR */
+a.nav-link:hover {
+  color: yellow !important;
+}
+
+a svg {
+  fill: yellow;
+}
+
+/* SPACE BETWEEN NAVBAR */
+body > div > nav {
+  height: 100px;
+  padding: 1em;
+}
+
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+  background: #101010;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #1abc9c;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.tm-copyright-text {
+  display: flex !important;
+  padding: 0 30px !important;
+  color: #1abc9c !important;
+  flex-flow: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.navbar-nav > li > a {
+  display: block;
+  height: 100%;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #1abc9c;
+}
+
+.navbar-nav > li > a:hover {
+  color: #fff;
+  background-color: #2aad8c !important;
+}
+
+.navbar-nav > li > a:active {
+  color: #fff;
+  background-color: #2aad8c !important;
+}
+
+.b-example-divider {
+  height: 3rem;
+  background-color: #2aad8c;
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+ /* MAIN AREAS */
+.main-areas-1 {
+  height: auto;
+  padding: 2em;
+}
+
+.main-areas {
+  height: 300px;
+  padding: 2em;
+  background: white;
+}
+
+.h_1, .h_2 {
+  text-shadow: 1px 1px black;
+}
+
+tr {
+  font-size: 16px;
+  text-shadow: 1px 0 0 black;
+  letter-spacing: 1px;
+}
+
+/* STRIPED TABLE */
+tr:nth-child(even) {
+  background: #CCC;
+}
+/* tr:nth-child(even) {background: #CCC} */
+
+ /* FOOTER */
+.footer {
+  height: 50px;
+  padding: 1em;
+  text-align: center;
+  background: #101010;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.tm-copyright-text {
+  display: inline-block;
+  padding: 5px 30px;
+  /* background-color: rgba(0,0,0,0.5); */
+  color: #1abc9c;
+  padding: 1rem;
+}
+
+/* MEDIA QUERY FOR UNDER 768px */
+@media (min-width: 768px) {
+
+  .navbar {
+    border-radius: 0;
+  }
+
+  .navbar-nav > li > a {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+}
+
+/* MEDIA QUERY FOR OVER 768px */
+@media (max-width: 768px) {
+
+  a svg {
+    fill: currentColor;
+    margin-right: 1em;
+  }
+
+  .glyphicon {
+    margin-right: 1em;
+  }
+}
