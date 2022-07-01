@@ -144,7 +144,8 @@ router.post('/edit-page/:slug', function (req, res) {
   var slug = req.body.slug.replace(/\s+/g, '-').toLowerCase();
 
   // IF SLUG IS EMPTY, IT WILL BE FILLED WITH TITLE
-  if (slug === "") slug = title.replace(/\s+/g, '-').toLowerCase();
+  if (slug === "") 
+    slug = title.replace(/\s+/g, '-').toLowerCase();
 
   var content = req.body.content;
   var      id = req.body.id;
@@ -155,7 +156,7 @@ router.post('/edit-page/:slug', function (req, res) {
     // CONSOLE ERRORS
     console.log('ERRORS!!!')
 
-    res.redirect('admin/edit-page', {
+    res.render('admin/edit_page', {
       errors: errors,
       title: title,
       slug: slug,
@@ -164,7 +165,8 @@ router.post('/edit-page/:slug', function (req, res) {
     })
 
   } else {
-    Page.findOne({ slug: slug, _id:{ '$ne':id } }, function (err, page) {
+
+    Page.findOne({ slug: slug, _id:{'$ne':id} }, function (err, page) {
       if (page) {
         req.flash('danger', "Page slug exists, choose another.")
         res.redirect('admin/edit_page', {
@@ -174,6 +176,7 @@ router.post('/edit-page/:slug', function (req, res) {
           id: id
         })
       } else {
+
         Page.findById(id, function(err, page) {
           if (err) return console.log(err)
 
@@ -182,10 +185,11 @@ router.post('/edit-page/:slug', function (req, res) {
           page.content = content;
 
           page.save(function (err) {
-            if (err) return console.log(err)
+            if (err) 
+              return console.log(err)
 
             req.flash('success', "Page Added Successfully")
-            res.redirect(`/admin/edit_page/${page.slug}`)
+            res.redirect(`/admin/pages/edit-page/${page.slug}`)
           }) 
         })
 
