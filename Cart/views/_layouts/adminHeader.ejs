@@ -26,6 +26,10 @@
     src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script
     src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <!-- CK EDITOR -->
+  <script 
+    src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
 
   <!-- FONT-AWESOME -->
   <link rel="stylesheet"
@@ -81,39 +85,38 @@
           <i class="far fa-lemon"
             style="margin-left: 5px; margin-right: 5px; color: yellow"></i>
         </a>
-        
-          <ul
-            class="nav navbar-nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-            <li>
-              <a href="/admin/pages" class="nav-link text-secondary">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24">
-                  <use xlink:href="#speedometer2" />
-                </svg>
-                Pages
-              </a>
-            </li>
-            <!-- <li>
+
+        <ul
+          class="nav navbar-nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+          <li>
+            <a href="/admin/pages" class="nav-link text-secondary">
+              <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                <use xlink:href="#speedometer2" />
+              </svg>
+              Pages
+            </a>
+          </li>
+          <!-- <li>
               <a href="/admin/pages" class="nav-link text-secondary">
                 Pages
               </a>
             </li> -->
-          </ul>
-        </div>
-      </nav>
-      <!-- END NAVBAR -->
+        </ul>
+      </div>
+  </nav>
+  <!-- END NAVBAR -->
 
-      <div class="">
-        <!-- DIVIDER -->
-        <div class="b-example-divider"></div>
-        <!-- SECTION 1 -->
-        <div class="gap-5 justify-content-center main-areas-1">
-          <%- messages('messages', locals) %>
+  <div class="">
+    <!-- DIVIDER -->
+    <div class="b-example-divider"></div>
+    <!-- SECTION 1 -->
+    <div class="gap-5 justify-content-center main-areas-1">
+      <%- messages('messages', locals) %>
 
-            <% if (errors) {%>
-              <% errors.forEach(function(error) { %>
-                <div class="alert alert-danger">
-                  <%= error.msg %>
-                </div>
-              <% });%>
-            <% }%>
-    
+        <% if (errors) {%>
+          <% errors.forEach(function(error) { %>
+            <div class="alert alert-danger">
+              <%= error.msg %>
+            </div>
+            <% });%>
+              <% }%>
