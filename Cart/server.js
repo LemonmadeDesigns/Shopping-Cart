@@ -35,15 +35,15 @@ app.use(express.static(path.join(__dirname, 'public/')));
 app.locals.errors = null;
 
 // PARSER APPLICATION URL ENCODED
-// app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // PARSER APPLICATION FOR JSON FILES
 // app.use(bodyParser.json({ type: 'application/*+json' })); 
 
 // Epress Parser
-app.use(
-  express.urlencoded({ extended: false })
-);
+// app.use(
+//   express.urlencoded({ extended: false })
+// );
   
 app.use(express.json());
 
