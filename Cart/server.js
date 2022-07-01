@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 
 // BOOTSTRAP
 
-
 const config = require('./config/database');
 
 // CONNECT TO db
@@ -50,9 +49,9 @@ app.use(express.json());
 // EXPRESS SESSIONS MIDDLEWARE
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: true }
+  // cookie: { secure: true }
 }))
 
 // EXPRESS VALIDATOR MIDDLEWARE
