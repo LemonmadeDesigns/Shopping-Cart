@@ -52,12 +52,13 @@ router.post('/add-page', function (req, res) {
 
   if (errors) {
     console.log('ERRORS!!!')
-    res.redirect('admin/add_page', {
+    res.render('admin/add_page', {
       errors: errors,
       title: title,
       slug: slug,
       content: content
     })
+
   } else {
     Page.findOne({ slug: slug }, function (err, page) {
       if (page) {
@@ -117,9 +118,9 @@ router.post('/reorder-pages', function (req, res)  {
 });
 
 // GET EDIT PAGE
-router.get('/edit-page/:slug', function (req, res) {
+router.get('/edit-page/:id', function (req, res) {
 
-  Page.findOne({ slug: req.params.slug }, function (err, page) {
+  Page.findById( req.params.id, function (err, page) {
     if (err) 
       return console.log(err)
     
@@ -135,7 +136,7 @@ router.get('/edit-page/:slug', function (req, res) {
 });
 
 // POST EDIT PAGE = (index)
-router.post('/edit-page/:slug', function (req, res) {
+router.post('/edit-page/:id', function (req, res) {
 
   req.checkBody('title', 'Title must have a value.').notEmpty();
   req.checkBody('content', 'Content must have a value.').notEmpty();
@@ -148,7 +149,7 @@ router.post('/edit-page/:slug', function (req, res) {
     slug = title.replace(/\s+/g, '-').toLowerCase();
 
   var content = req.body.content;
-  var      id = req.body.id;
+  var      id = req.params.id;
 
   var errors = req.validationErrors();
 
@@ -189,13 +190,13 @@ router.post('/edit-page/:slug', function (req, res) {
               return console.log(err)
 
             req.flash('success', "Page Added Successfully")
-            res.redirect(`/admin/pages/edit-page/${page.slug}`)
+            res.redirect(`/admin/pages/edit-page/${id}`)
           }) 
         })
 
-        console.log(title)
-        console.log(slug)
-        console.log(content)
+        console.log(`Title: ${title}`)
+        console.log(`Slug: ${slug}`)
+        console.log(`Content: ${content}`)
         console.log('SUCCESS!!!')
 
      

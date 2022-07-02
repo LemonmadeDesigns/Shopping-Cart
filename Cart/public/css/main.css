@@ -23,6 +23,11 @@ body > div > nav {
   background: #101010;
 }
 
+#navbar > a, body > nav > div > div.navbar-header > a {
+  height: 74px;
+  font-size: xx-large;
+}
+
 .container-fluid {
   height: 100%;
 }

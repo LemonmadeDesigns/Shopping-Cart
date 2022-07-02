@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-// PAGE SCHEMA
-let PageSchema = mongoose.Schema({
+// CATEGORY SCHEMA
+let CategorySchema = mongoose.Schema({
 
   title: {
     type: String
@@ -10,17 +10,9 @@ let PageSchema = mongoose.Schema({
 
   slug: {
     type: String
-  },
-
-  content: {
-    type: String
-    // , required: true
-  },
-
-  sorting: {
-    type: Number
-  },
+  }
 
 });
 
-let Page = module.exports = mongoose.model('Page', PageSchema);
+let Category = module.exports = mongoose.model('Category', CategorySchema);
+
