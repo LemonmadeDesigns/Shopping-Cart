@@ -109,6 +109,11 @@ tr:nth-child(even) {
   margin: 20px;
 }
 
+#no_image {
+  height: 100px;
+  width: 100px;
+}
+
  /* FOOTER */
 .footer {
   height: 50px;

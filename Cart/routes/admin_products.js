@@ -2,21 +2,21 @@ const express = require('express')
 const router = express.Router()
 const mkdirp = require('mkdirp')
 const fs = require('fs-extra')
-const resizeImg = require('resize-img') 
+const resizeImg = require('resize-img')
 
 // GET PAGE MODELS
-let Category = require('../models/category')
-let Product = require('../models/product')
+var Category = require('../models/category')
+var Product = require('../models/product')
 
 // GET PRODUCT PAGE = (index)
 router.get('/', (req, res) => {
-  let count;
+  var count;
 
   Product.count(function (err, c) {
     count = c
   })
 
-  Product.find(function(err, products) {
+  Product.find(function (err, products) {
     res.render('admin/products', {
       products: products,
       count: count
@@ -44,63 +44,114 @@ router.get('/add-product', function (req, res) {
 
 });
 
-// POST ADD PRODUCT = (index)
+// POST ADD PRODUCT PAGE
 // router.post('/add-product', function (req, res) {
 
-//   req.checkBody('title', 'Title must have a value.').notEmpty();
-//   req.checkBody('content', 'Content must have a value.').notEmpty();
+//   var imageFile;
 
-//   var title = req.body.title;
-//   var slug = req.body.slug.replace(/\s+/g, '-').toLowerCase();
-
-//   // IF SLUG IS EMPTY, IT WILL BE FILLED WITH TITLE
-//   if (slug === "") slug = title.replace(/\s+/g, '-').toLowerCase();
-
-//   var content = req.body.content;
-//   var errors = req.validationErrors();
-
-//   if (errors) {
-//     console.log('ERRORS!!!')
-//     res.render('admin/add_product', {
-//       errors: errors,
-//       title: title,
-//       slug: slug,
-//       content: content
-//     })
-
-//   } else {
-//     Product.findOne({ slug: slug }, function (err, product) {
-//       if (product) {
-//         req.flash('danger', "Product exists, choose another.")
-//         res.redirect('admin/add_product', {
-//           title: title,
-//           slug: slug,
-//           content: content
-//         })
-//       } else {
-//         var product = new Product({
-//           title: title,
-//           slug: slug,
-//           content: content,
-//           sorting: 100
-//         })
-
-//         console.log(title)
-//         console.log(slug)
-//         console.log(content)
-//         console.log('SUCCESS!!!')
-
-//         product.save(function (err) {
-//           if (err) return console.log(err)
-
-//           req.flash('success', "product Added Successfully")
-//           res.redirect('/admin/products')
-//         }) 
-//       }
-//     })
+//   if (req.files) {
+//     imageFile = typeof (req.files.image) !== "undefined" ? req.files.image.name : "";
 //   }
 
-// });
+//   if (!req.files) {
+//     imageFile = "";
+//   }
+
+router.post('/add-product', function(req, res) {     
+  
+  let imageFile = '';     
+  
+  if(req.files !== null) {       
+    imageFile = typeof(req.files.image)  !== undefined || null ? req.files.image.name: "";
+  }
+
+  req.checkBody('title', 'Title must have a value.').notEmpty();
+  req.checkBody('description', 'Description must have a value.').notEmpty();
+  req.checkBody('price', 'Price must have a value.').isDecimal();
+  req.checkBody('image', 'You must upload an image.').isImage(imageFile);
+
+  var title = req.body.title;
+  var slug = title.replace(/\s+/g, '-').toLowerCase();
+  var description = req.body.description;
+  var price = req.body.price;
+  var category = req.body.category;
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    console.log(`ERRORS!!! ${errors}`)
+
+    Category.find(function (err, categories) {
+      res.render('admin/add_product', {
+        errors: errors,
+        title: title,
+        description: description,
+        categories: categories,
+        price: price
+      })
+    })
+
+  } else {
+    Product.findOne({ slug: slug }, function (err, product) {
+      if (product) {
+        req.flash('danger', "Product Title exists, choose another.")
+
+        Category.find(function (err, categories) {
+          res.render('admin/add_product', {
+            title: title,
+            description: description,
+            categories: categories,
+            price: price
+          })
+        })
+
+      } else {
+        var price2 = parseFloat(price).toFixed(2)
+
+        var product = new Product({
+          title: title,
+          slug: slug,
+          description: description,
+          category: category,
+          price: price2,
+          image: imageFile
+        })
+
+        console.log('Product: SUCCESS!!!')
+
+        product.save(function (err) {
+          if (err)
+            return console.log(err)
+
+          mkdirp(`public/product_images/${product._id}`, function (err) {
+            return console.log(err)
+          })
+
+          mkdirp(`public/product_images/${product._id}/gallery`, function (err) {
+            return console.log(err)
+          })
+
+          mkdirp(`public/product_images/${product._id}/gallery/thumbs`, function (err) {
+            return console.log(err)
+          })
+
+          if (imageFile != "") {
+            var productImage = req.files.image;
+            var path = `public/product_images/${product._id}/${imageFile}`;
+
+            productImage.mv(path, function (err) {
+              return console.log(err)
+            })
+          }
+
+          req.flash('success', "Product Added Successfully")
+          res.redirect('/admin/products')
+        })
+      }
+    })
+  }
+
+});
 
 // POST REORDER PRODUCT 
 // router.post('/reorder-products', function (req, res)  {
@@ -129,10 +180,10 @@ router.get('/add-product', function (req, res) {
 // GET EDIT PRODUCT
 router.get('/edit-product/:id', function (req, res) {
 
-  Product.findById( req.params.id, function (err, product) {
-    if (err) 
+  Product.findById(req.params.id, function (err, product) {
+    if (err)
       return console.log(err)
-    
+
     res.render('admin/edit_product', {
       title: product.title,
       slug: product.slug,
@@ -154,11 +205,11 @@ router.post('/edit-product/:id', function (req, res) {
   var slug = req.body.slug.replace(/\s+/g, '-').toLowerCase();
 
   // IF SLUG IS EMPTY, IT WILL BE FILLED WITH TITLE
-  if (slug === "") 
+  if (slug === "")
     slug = title.replace(/\s+/g, '-').toLowerCase();
 
   var content = req.body.content;
-  var      id = req.params.id;
+  var id = req.params.id;
 
   var errors = req.validationErrors();
 
@@ -176,7 +227,7 @@ router.post('/edit-product/:id', function (req, res) {
 
   } else {
 
-    Product.findOne({ slug: slug, _id:{'$ne':id} }, function (err, product) {
+    Product.findOne({ slug: slug, _id: { '$ne': id } }, function (err, product) {
       if (product) {
         req.flash('danger', "Product exists, choose another.")
         res.redirect('admin/edit_product', {
@@ -187,7 +238,7 @@ router.post('/edit-product/:id', function (req, res) {
         })
       } else {
 
-        Product.findById(id, function(err, product) {
+        Product.findById(id, function (err, product) {
           if (err) return console.log(err)
 
           product.title = title;
@@ -195,12 +246,12 @@ router.post('/edit-product/:id', function (req, res) {
           product.content = content;
 
           product.save(function (err) {
-            if (err) 
+            if (err)
               return console.log(err)
 
             req.flash('success', "Product Added Successfully")
             res.redirect(`/admin/products/edit-product/${id}`)
-          }) 
+          })
         })
 
         console.log(`Title: ${title}`)
@@ -208,7 +259,7 @@ router.post('/edit-product/:id', function (req, res) {
         console.log(`Content: ${content}`)
         console.log('SUCCESS!!!')
 
-     
+
       }
     })
   }
@@ -222,7 +273,7 @@ router.get('/delete_product/:id', (req, res) => {
     req.flash('success', "Product Deleted Successfully")
     res.redirect('/admin/products/')
   })
- 
+
 });
 
 // EXPORTS
