@@ -104,6 +104,11 @@ tr:nth-child(even) {
 }
 /* tr:nth-child(even) {background: #CCC} */
 
+/* IMAGE PREVIEW */
+#imgPreview { 
+  margin: 20px;
+}
+
  /* FOOTER */
 .footer {
   height: 50px;
