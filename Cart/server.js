@@ -3,9 +3,10 @@ const express = require('express');
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator');
-const expressMessages = require('express-messages');
+// const expressMessages = require('express-messages');
 const path = require('path');
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
 
 // BOOTSTRAP
 
@@ -33,7 +34,10 @@ app.use(express.static(path.join(__dirname, 'public/')));
 // SET GLOBAL ERRORS VARIABLE
 app.locals.errors = null;
 
-// PARSER APPLICATION URL ENCODED
+// EXPRESS FILEUPLOAD Middleware
+app.use(fileUpload());
+
+// BODY PARSER APPLICATION URL ENCODED
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // PARSER APPLICATION FOR JSON FILES
@@ -80,10 +84,12 @@ app.use(function (req, res, next) {
 // SET UP ROUTES
 let adminCategories = require('./routes/admin_categories.js')
 let adminPages = require('./routes/admin_pages.js')
+let adminProducts = require('./routes/admin_products.js')
 let pages = require('./routes/pages.js')
 
 app.use('/admin/categories', adminCategories);
 app.use('/admin/pages', adminPages);
+app.use('/admin/products', adminProducts);
 app.use('/', pages)
 
 // START THE SERVER
