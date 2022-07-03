@@ -7,6 +7,7 @@ const resizeImg = require('resize-img')
 // GET PAGE MODELS
 var Category = require('../models/category')
 var Product = require('../models/product')
+const product = require('../models/product')
 
 // GET PRODUCT PAGE = (index)
 router.get('/', (req, res) => {
@@ -153,46 +154,45 @@ router.post('/add-product', function(req, res) {
 
 });
 
-// POST REORDER PRODUCT 
-// router.post('/reorder-products', function (req, res)  {
-//   let ids = req.body['id[]']
-
-//   let count = 0
-
-//   for (let i = 0; i < ids.length; i++) {
-//     let id = ids[i]
-//     count++;
-
-//     (function(count) {
-//       Product.findById(id, function (err, product) {
-//         product.sorting = count
-//         product.save(function (err) {
-//           if (err) return console.log(err)
-//         })
-//       })
-//     })(count)
-
-//   }
-
-//   console.log(req.body);
-// });
-
 // GET EDIT PRODUCT
 router.get('/edit-product/:id', function (req, res) {
 
-  Product.findById(req.params.id, function (err, product) {
-    if (err)
-      return console.log(err)
+  var errors;
 
-    res.render('admin/edit_product', {
-      title: product.title,
-      slug: product.slug,
-      content: product.content,
-      id: product._id
+  if (req.session.errors) errors = req.session.errors;
+  req.session.errors = null
+
+  Category.find(function (err, categories) {
+
+    product.findById(req.params.id, function (err, prod) {
+      if (err) {
+        console.log(err)
+        res.redirect('/admin/products')
+      } else {
+        var galleryDir = `public/product_images/${prod._id}/gallery`;
+        var galleryImages = null;
+      
+        fs.readdir(galleryDir, function (err, files) {
+          if (err) {
+            console.log(err);
+          } else {
+            galleryImages = files;
+
+            res.render('admin/edit_product', {
+              errors: errors,
+              title: prod.title,
+              description: prod.description,
+              categories: categories,
+              category: prod.category.replace(/\s+/g, '-').toLowerCase(),
+              price: prod.price,
+              image: prod.image,
+              galleryImages: galleryImages
+            })
+          }
+        })
+      }
     })
-
   })
-
 });
 
 // POST PRODUCT EDIT PAGE = (index)
