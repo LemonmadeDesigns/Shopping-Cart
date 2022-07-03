@@ -45,19 +45,6 @@ router.get('/add-product', function (req, res) {
 
 });
 
-// POST ADD PRODUCT PAGE
-// router.post('/add-product', function (req, res) {
-
-//   var imageFile;
-
-//   if (req.files) {
-//     imageFile = typeof (req.files.image) !== "undefined" ? req.files.image.name : "";
-//   }
-
-//   if (!req.files) {
-//     imageFile = "";
-//   }
-
 router.post('/add-product', function(req, res) {     
   
   let imageFile = '';     
@@ -184,9 +171,10 @@ router.get('/edit-product/:id', function (req, res) {
               description: prod.description,
               categories: categories,
               category: prod.category.replace(/\s+/g, '-').toLowerCase(),
-              price: prod.price,
+              price: parseFloat(prod.price).toFixed(2),
               image: prod.image,
-              galleryImages: galleryImages
+              galleryImages: galleryImages,
+              id: prod._id
             })
           }
         })
